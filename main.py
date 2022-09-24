@@ -1,4 +1,6 @@
 import re
+import sys
+from pystray import Icon, Menu, MenuItem
 from time import sleep
 from win32gui import GetForegroundWindow
 from win32process import GetWindowThreadProcessId
@@ -9,6 +11,10 @@ from configparser import ConfigParser
 from serial import Serial
 from serial.serialutil import SerialException
 from serial.tools import list_ports
+
+from ctypes import windll
+
+from PIL import Image
 
 
 def findDevicePort(identifier=None, waitForResponse=5):
@@ -146,7 +152,7 @@ def findDevicePort(identifier=None, waitForResponse=5):
     return SERIAL
         
 
-def getCurrentProcess():
+def getCurrentProcess() -> str | None:
     try:
         window = GetForegroundWindow()
         PID = GetWindowThreadProcessId(window)
@@ -155,7 +161,10 @@ def getCurrentProcess():
         return None
 
 
-if __name__ == "__main__":
+def main():
+    # Perhaps a better implementation than "while True"
+    # https://github.com/Danesprite/windows-fun/blob/master/window%20change%20listener.py
+    
     print('[INFO]: Welcome to PyCurrentWindow!')
     
     serial = findDevicePort('ADAFRUIT MACROPAD')
@@ -168,3 +177,17 @@ if __name__ == "__main__":
             serial.write(str.encode(process))   # Send the update
             
         sleep(1)    # Sleep, and repeat
+
+
+if __name__ == "__main__":
+    
+    windll.shcore.SetProcessDpiAwareness(2)
+    
+    def stop() -> None:
+        App.stop()
+        sys.exit()
+    
+    icon = Image.open('icon.png')
+    App = Icon('PyCurrentWindow', icon=icon, menu=Menu(MenuItem('Quit', stop, default=True)))
+    App.run_detached()
+    main()
