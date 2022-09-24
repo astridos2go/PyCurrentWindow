@@ -1,5 +1,7 @@
 # PyCurrentWindow
 
+![PyCurrentWindowIcon](https://github.com/astridos2go/PyCurrentWindow/blob/main/icon.png)
+
 A python-based program that links with a CircuitPython board via serial, and reports the currently running program to it.
 
 ## :book: Background
