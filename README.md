@@ -1,6 +1,6 @@
-# PyCurrentWindow
+# ![PyCurrentWindow Icon](https://github.com/astridos2go/PyCurrentWindow/blob/main/icon.svg) PyCurrentWindow
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue.svg)](https://www.python.org/) [![license-mit](https://img.shields.io/github/license/astridos2go/pycurrentwindow?color=gre&label=License)](https://github.com/astridos2go/PyCurrentWindow/blob/main/LICENSE) [![latest-version](https://img.shields.io/github/v/release/astridos2go/pycurrentwindow?display_name=tag&include_prereleases&label=Version)](https://github.com/astridos2go/PyCurrentWindow/releases/latest) ![made-for-windows](https://img.shields.io/badge/Platform-Windows-blueviolet)
 
-![PyCurrentWindowIcon](https://github.com/astridos2go/PyCurrentWindow/blob/main/icon.png)
 
 A python-based program that links with a CircuitPython board via serial, and reports the currently running program to it.
 
