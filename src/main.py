@@ -1,20 +1,25 @@
-import re
-import sys
-from pystray import Icon, Menu, MenuItem
-from time import sleep
-from win32gui import GetForegroundWindow
-from win32process import GetWindowThreadProcessId
-from psutil import Process
+__version__ = 1.0
 
-from configparser import ConfigParser
+import os
+import re
+
+from ctypes import windll
+from os.path import dirname, join as join_path
+from time import sleep
+from threading import Thread
 
 from serial import Serial
 from serial.serialutil import SerialException
 from serial.tools import list_ports
 
-from ctypes import windll
-
+from configparser import ConfigParser
 from PIL import Image
+from pystray import Icon, Menu, MenuItem
+
+
+from windowChangeListener import ObservableWindowChange, SerialWindowObserver
+
+LOCATION = dirname(__file__)
 
 
 def findDevicePort(identifier=None, waitForResponse=5):
@@ -150,44 +155,50 @@ def findDevicePort(identifier=None, waitForResponse=5):
     
     # Return the serial
     return SERIAL
-        
-
-def getCurrentProcess() -> str | None:
-    try:
-        window = GetForegroundWindow()
-        PID = GetWindowThreadProcessId(window)
-        return Process(PID[-1]).name()
-    except Exception:
-        return None
 
 
-def main():
-    # Perhaps a better implementation than "while True"
-    # https://github.com/Danesprite/windows-fun/blob/master/window%20change%20listener.py
+def checkForUpdates():
+    # https://malja.github.io/zroya/tutorials/template.html
+    pass
+
     
+def main(verbose=False):
     print('[INFO]: Welcome to PyCurrentWindow!')
     
     serial = findDevicePort('ADAFRUIT MACROPAD')
     
-    process = getCurrentProcess()
+    def run():
+        # Create an observable and an observer observing it
+        subject = ObservableWindowChange()
+        _ = SerialWindowObserver(subject, serial, verbose)
+
+        # Listen for window changes
+        subject.start_event_listener()
+
+    # Start the 'run' method in a daemonized thread.
+    t = Thread(target=run)
+    t.daemon = True
+    t.start()
+
+    # Keep the main thread running in a sleep loop until ctrl+c (SIGINT) is caught.
+    # Once the main thread terminates, all daemon threads will automatically
+    # terminate.
     while True:
-        new_process = getCurrentProcess()
-        if new_process is not None and new_process != process:
-            process = new_process   # Update process
-            serial.write(str.encode(process))   # Send the update
-            
-        sleep(1)    # Sleep, and repeat
-
-
+        try:
+            sleep(0.1)
+        except Exception:
+            break
+        
+        
 if __name__ == "__main__":
-    
     windll.shcore.SetProcessDpiAwareness(2)
     
     def stop() -> None:
         App.stop()
-        sys.exit()
+        os._exit(0)
     
-    icon = Image.open('icon.png')
-    App = Icon('PyCurrentWindow', icon=icon, menu=Menu(MenuItem('Quit', stop, default=True)))
+    icon = Image.open(join_path(LOCATION, 'images', 'icon.png'))
+    checkForUpdates()
+    App = Icon('PyCurrentWindow', icon=icon, menu=Menu(MenuItem('Quit', stop)))
     App.run_detached()
-    main()
+    main(True)
