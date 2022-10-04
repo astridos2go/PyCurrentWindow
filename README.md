@@ -1,4 +1,4 @@
-# <img src="https://github.com/astridos2go/PyCurrentWindow/blob/main/icon.svg" width="25px"> PyCurrentWindow
+# <img src="https://github.com/astridos2go/PyCurrentWindow/blob/main/images/icon.svg" width="25px"> PyCurrentWindow
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue.svg)](https://www.python.org/) [![license-mit](https://img.shields.io/github/license/astridos2go/pycurrentwindow?color=gre&label=License)](https://github.com/astridos2go/PyCurrentWindow/blob/main/LICENSE) [![latest-version](https://img.shields.io/github/v/release/astridos2go/pycurrentwindow?display_name=tag&include_prereleases&label=Version)](https://github.com/astridos2go/PyCurrentWindow/releases/latest) ![made-for-windows](https://img.shields.io/badge/Platform-Windows-blueviolet)
 
 
