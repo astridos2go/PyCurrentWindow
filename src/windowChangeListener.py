@@ -7,8 +7,9 @@ executable name of newly focused windows.
 
 import ctypes
 import ctypes.wintypes
-from win32process import GetWindowThreadProcessId
+
 from psutil import Process
+from win32process import GetWindowThreadProcessId
 
 
 class ObservableWindowChange(object):
@@ -35,6 +36,7 @@ class IWindowChangeObserver(object):
     """
     Base class for observing window changes
     """
+
     def __init__(self, observable):
         observable.register_observer(self)
 
@@ -46,10 +48,11 @@ class WindowChangeEventListener(object):
     """
     WindowChangeEventListener
     """
+
     def __init__(self, observable):
         self.observable = observable
 
-    def listen_forever(self):        
+    def listen_forever(self):
         # Look here for DWORD event constants:
         # http://stackoverflow.com/questions/15927262/convert-dword-event-constant-from-wineventproc-to-name-in-c-sharp
         # Don't worry, they work for python too.
@@ -111,7 +114,7 @@ class SerialWindowObserver(IWindowChangeObserver):
         super().__init__(observable)
         self.serial = serial
         self.verbose = verbose
-    
+
     def notify(self, executable_name):
         self.serial.write(str.encode(executable_name))
         if self.verbose:

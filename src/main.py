@@ -2,20 +2,19 @@ __version__ = 1.0
 
 import os
 import re
-
+import webbrowser
+from configparser import ConfigParser
 from ctypes import windll
-from os.path import dirname, join as join_path
-from time import sleep
+from os.path import dirname
+from os.path import join as join_path
 from threading import Thread
+from time import sleep
 
+from PIL import Image
+from pystray import Icon, Menu, MenuItem
 from serial import Serial
 from serial.serialutil import SerialException
 from serial.tools import list_ports
-
-from configparser import ConfigParser
-from PIL import Image
-from pystray import Icon, Menu, MenuItem
-
 
 from windowChangeListener import ObservableWindowChange, SerialWindowObserver
 
@@ -155,12 +154,7 @@ def findDevicePort(identifier=None, waitForResponse=5):
     
     # Return the serial
     return SERIAL
-
-
-def checkForUpdates():
-    # https://malja.github.io/zroya/tutorials/template.html
-    pass
-
+            
     
 def main(verbose=False):
     print('[INFO]: Welcome to PyCurrentWindow!')
@@ -196,9 +190,11 @@ if __name__ == "__main__":
     def stop() -> None:
         App.stop()
         os._exit(0)
+        
+    def updateCheck() -> None:
+        webbrowser.open("https://github.com/astridos2go/PyCurrentWindow/releases/latest")
     
     icon = Image.open(join_path(LOCATION, 'images', 'icon.png'))
-    checkForUpdates()
-    App = Icon('PyCurrentWindow', icon=icon, menu=Menu(MenuItem('Quit', stop)))
+    App = Icon('PyCurrentWindow', icon=icon, menu=Menu(MenuItem('Quit', stop), MenuItem("Check for Updates", updateCheck)))
     App.run_detached()
     main(True)
