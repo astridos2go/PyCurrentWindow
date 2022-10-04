@@ -9,8 +9,6 @@ import ctypes
 import ctypes.wintypes
 
 from psutil import Process
-from win32process import GetWindowThreadProcessId
-
 
 class ObservableWindowChange(object):
     def __init__(self):
@@ -77,8 +75,9 @@ class WindowChangeEventListener(object):
         )
 
         def callback(hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime):
-            PID = GetWindowThreadProcessId(hwnd)
-            Executable = Process(PID[-1]).name()
+            PID = ctypes.c_ulong()
+            user32.GetWindowThreadProcessId(hwnd, ctypes.byref(PID))
+            Executable = Process(int(PID.value)).name()
             # Notify observers
             self.observable.notify_observers(Executable)
 
