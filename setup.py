@@ -14,7 +14,7 @@ opts = {'build_exe': {'build_exe': 'executable',
 
 setup(options=opts,
       name="PyCurrentWindow",
-      version="1.0",
+      version="1.1",
       description="PyCurrentWindow",
       author="David Blum",
       license="MIT",
