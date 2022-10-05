@@ -1,3 +1,4 @@
+import os
 import re
 from configparser import ConfigParser
 from time import sleep
@@ -71,10 +72,16 @@ def findDevicePort(identifier=None, waitForResponse=5):
     if identifier is None:
         print("[WARN]: Without an identifier, the serial port cannot be validated. We will still try to return a port, but no one may be listening on the other end...")
     
+    app_data = os.path.join(os.getenv('APPDATA'), 'PyCurrentWindow')
+    if not os.path.exists(app_data):
+        os.makedirs(app_data)
+    
+    ini_file = os.path.join(app_data, 'device.ini')
+    
     # Get configuration
     device_info = ConfigParser()
     # Read existing device.ini if it exists
-    device_info.read('device.ini')
+    device_info.read(ini_file)
     
     # Initialize serial
     SERIAL = None
@@ -128,14 +135,14 @@ def findDevicePort(identifier=None, waitForResponse=5):
         if SERIAL is None:
             print(f'[ERROR]: The {identifier} was not found :(')
             print('[INFO]: PyCurrentWindow will now terminate')
-            exit(0)
+            os._exit(0)
     
     # Save the PORT and HWID
     device_info['DEVICE']['PORT'] = PORT    # Get last used port
     device_info['DEVICE']['HWID'] = HWID    # Get Hardware Identifier
     
     # Save the configuration
-    with open('device.ini', 'w') as device_file:
+    with open(ini_file, 'w') as device_file:
         device_info.write(device_file)
     
     # Return the serial
