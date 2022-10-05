@@ -7,8 +7,10 @@ executable name of newly focused windows.
 
 import ctypes
 import ctypes.wintypes
+from logging import error, info, warning
 
 from psutil import Process
+
 
 class ObservableWindowChange(object):
     def __init__(self):
@@ -94,7 +96,7 @@ class WindowChangeEventListener(object):
             WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS
         )
         if hook == 0:
-            print('SetWinEventHook failed')
+            error('SetWinEventHook failed')
             exit(1)
 
         msg = ctypes.wintypes.MSG()
@@ -103,7 +105,7 @@ class WindowChangeEventListener(object):
             user32.DispatchMessageW(msg)
 
         # Stopped receiving events, so clear up the winevent hook and uninitialise.
-        print('Stopped receiving new window change events. Exiting...')
+        warning('Stopped receiving new window change events. Exiting...')
         user32.UnhookWinEvent(hook)
         ole32.CoUninitialize()
 
@@ -117,4 +119,4 @@ class SerialWindowObserver(IWindowChangeObserver):
     def notify(self, executable_name):
         self.serial.write(str.encode(executable_name))
         if self.verbose:
-            print(f"[INFO]: {executable_name}")
+            info(executable_name)
