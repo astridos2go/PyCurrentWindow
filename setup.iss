@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PyCurrentWindow"
-#define MyAppVersion "v1.0"
+#define MyAppVersion "v1.1"
 #define MyAppPublisher "David Blum"
 #define MyAppExeName "PyCurrentWindow.exe"
 
