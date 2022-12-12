@@ -7,14 +7,14 @@ exes = [
         script="PyCurrentWindow.py",
         base=base,
         target_name="PyCurrentWindow.exe",
-        icon="images/icon.ico",
+        icon="pycurrentwindow/images/icon.ico",
     )
 ]
 
 opts = {
     "build_exe": {
         "build_exe": "executable",
-        "include_files": ["src/", "LICENSE", "images/"],
+        "include_files": ["pycurrentwindow/", "LICENSE", "pycurrentwindow/images"],
         "includes": ["win32process"],
         "excludes": ["tkinter"],
     }
@@ -27,6 +27,5 @@ setup(
     description="PyCurrentWindow",
     author="David Blum",
     license="MIT",
-    packages=["src"],
     executables=exes,
 )

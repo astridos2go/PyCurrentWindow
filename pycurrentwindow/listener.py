@@ -1,4 +1,5 @@
-# Modified from https://github.com/Danesprite/windows-fun/blob/master/window%20change%20listener.py under the Unlicense License
+# Modified from https://github.com/Danesprite/windows-fun/blob/master/window%20change%20listener.py
+# under the Unlicense License
 
 """
 Script using the Windows API to register for window focus changes and print the
