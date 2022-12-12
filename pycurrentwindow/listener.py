@@ -1,4 +1,5 @@
-# Modified from https://github.com/Danesprite/windows-fun/blob/master/window%20change%20listener.py under the Unlicense License
+# Modified from https://github.com/Danesprite/windows-fun/blob/master/window%20change%20listener.py
+# under the Unlicense License
 
 """
 Script using the Windows API to register for window focus changes and print the
@@ -7,7 +8,7 @@ executable name of newly focused windows.
 
 import ctypes
 import ctypes.wintypes
-from logging import error, info, warning
+from logging import debug, error, warning
 
 from psutil import Process
 
@@ -20,8 +21,8 @@ class ObservableWindowChange(object):
         self.__observers.append(observer)
 
     def notify_observers(self, executable_name, *_):
-        if executable_name == '':
-            return ''
+        if executable_name == "":
+            return ""
         for observer in self.__observers:
             observer.notify(executable_name)
 
@@ -73,10 +74,12 @@ class WindowChangeEventListener(object):
             ctypes.wintypes.LONG,
             ctypes.wintypes.LONG,
             ctypes.wintypes.DWORD,
-            ctypes.wintypes.DWORD
+            ctypes.wintypes.DWORD,
         )
 
-        def callback(hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime):
+        def callback(
+            hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime
+        ):
             PID = ctypes.c_ulong()
             user32.GetWindowThreadProcessId(hwnd, ctypes.byref(PID))
             Executable = Process(int(PID.value)).name()
@@ -93,10 +96,10 @@ class WindowChangeEventListener(object):
             WinEventProc,
             0,
             0,
-            WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS
+            WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS,
         )
         if hook == 0:
-            error('SetWinEventHook failed')
+            error("SetWinEventHook failed")
             exit(1)
 
         msg = ctypes.wintypes.MSG()
@@ -105,18 +108,16 @@ class WindowChangeEventListener(object):
             user32.DispatchMessageW(msg)
 
         # Stopped receiving events, so clear up the winevent hook and uninitialise.
-        warning('Stopped receiving new window change events. Exiting...')
+        warning("Stopped receiving new window change events. Exiting...")
         user32.UnhookWinEvent(hook)
         ole32.CoUninitialize()
 
 
 class SerialWindowObserver(IWindowChangeObserver):
-    def __init__(self, observable, serial, verbose):
+    def __init__(self, observable, serial):
         super().__init__(observable)
         self.serial = serial
-        self.verbose = verbose
 
     def notify(self, executable_name):
         self.serial.write(str.encode(executable_name))
-        if self.verbose:
-            info(executable_name)
+        debug(executable_name)

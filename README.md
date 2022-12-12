@@ -7,7 +7,7 @@ A python-based program that links with a CircuitPython board via serial, and rep
 ## :book: Background
 I recently purchased the [Adafruit MacroPad RP2040](https://learn.adafruit.com/adafruit-macropad-rp2040). I plan on using this nifty little thing, as... a Macropad.
 
-To do this, I have utilized the guide on Adafruit called [MACROPAD Hotkeys](https://learn.adafruit.com/macropad-hotkeys). This is a great starting point, but I want MORE. 
+To do this, I have utilized the guide on Adafruit called [MACROPAD Hotkeys](https://learn.adafruit.com/macropad-hotkeys). This is a great starting point, but I want MORE.
 
 I want _my_ MacroPad to be able to switch macro sets **automatically**. As mentioned in the [guide](https://learn.adafruit.com/macropad-hotkeys/going-further)...
 
@@ -16,7 +16,7 @@ I want _my_ MacroPad to be able to switch macro sets **automatically**. As menti
 Food for thought indeed... Which is what has driven me to create [PyCurrentWindow](https://github.com/astridos2go/PycurrentWindow)
 
 ## :thought_balloon: So what exactly does it do?
-I'm so glad you asked. Well, for the Macropad to be able to switch macro profiles automatically, it would have to know which program was currently in focus. 
+I'm so glad you asked. Well, for the Macropad to be able to switch macro profiles automatically, it would have to know which program was currently in focus.
 
 As mentioned in the guide excerpt from earlier:
 > CircuitPython can receive serial messages while also emulating a keyboard
@@ -31,7 +31,7 @@ See the [latest release](https://github.com/astridos2go/PyCurrentWindow/releases
 ### On your CircuitPython Macropad
 You have two options:
 1. Copy and paste the following `code.py` [here](https://gist.github.com/astridos2go/89059bc435260294aadce79624f41a97) into your `CIRCUITPY` drive.
-- Once running, you can modify any of the existing Macro files by adding a dictionary key `program`. Set the value to the program name you'd like to use with those Macro keys. 
+- Once running, you can modify any of the existing Macro files by adding a dictionary key `program`. Set the value to the program name you'd like to use with those Macro keys.
 - The `program` key and value are NOT required! Existing macros still work!
 - Even if the Macropad switches automatically, you can still manually cycle through the profiles. (Note that if a bound program window refocuses, it will switch back to that macro)
 
