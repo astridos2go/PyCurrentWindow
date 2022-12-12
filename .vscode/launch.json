@@ -16,7 +16,7 @@
             "name": "Current App",
             "type": "python",
             "request": "launch",
-            "program": "pycurrentwindow/__init__.py",
+            "program": "PyCurrentWindow.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
